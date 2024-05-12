@@ -68,6 +68,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 [bundles]
+koin = ["koin-core","koin-android","koin-androidx-compose"]
 networking = ["retrofit", "retrofit-serialization", "serialization-json", "coroutines", "coroutines-android", "okhttp3"]
 compose = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling", "androidx-material3",
     "androidx-lifecycle-viewmodel-compose", "androidx-lifecycle-runtime-compose", "coil",
