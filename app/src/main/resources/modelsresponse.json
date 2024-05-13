@@ -1,0 +1,31 @@
+[
+  {
+    "_id": 1,
+    "title": "hola",
+    "tags": [
+      "cute",
+      "pyret"
+    ]
+  },
+  {
+    "_id": 2,
+    "mimetype": "hola",
+    "tags": [
+      "cute",
+      "best",
+      "siberian",
+      "fluffy"
+    ]
+  },
+  {
+    "_id": 3,
+    "title": "hola",
+    "tags": [
+      "cute",
+      "fat",
+      "ragdoll",
+      "beautiful",
+      "sleeping"
+    ]
+  }
+]

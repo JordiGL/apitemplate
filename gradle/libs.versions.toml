@@ -24,6 +24,10 @@ compose-window-size = "1.2.1"
 androidx-window = "1.2.0"
 room = "2.6.1"
 work = "2.9.0"
+mockWebServer = "5.0.0-alpha.2"
+coroutinesTest = "1.7.3"
+truth = "1.1.5"
+mockk = "1.13.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -61,6 +65,10 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
 workmanager-koin = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koinCore" }
 work-testing = { module = "androidx.work:work-testing", version.ref = "work" }
+test-mock-webserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockWebServer" }
+test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+test-truth = { module = "com.google.truth:truth", version.ref ="truth" }
+test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -75,3 +83,4 @@ compose = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling", "androi
 window = ["compose-window-size", "androidx-window"]
 room = ["room-runtime","room-ktx"]
 worker = ["work-runtime","workmanager-koin"]
+test = ["test-mock-webserver", "test-coroutines", "test-truth", "test-mockk"]

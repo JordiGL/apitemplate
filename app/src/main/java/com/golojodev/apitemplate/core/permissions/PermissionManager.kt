@@ -9,8 +9,10 @@ import androidx.core.content.ContextCompat
 object PermissionManager {
 
     fun checkIfPermissionGranted(context: Context, permission: String): Boolean {
-        return (ContextCompat.checkSelfPermission(context, permission)
-                == android.content.pm.PackageManager.PERMISSION_GRANTED)
+        return (
+            ContextCompat.checkSelfPermission(context, permission)
+                == android.content.pm.PackageManager.PERMISSION_GRANTED
+            )
     }
 
     fun shouldShowPermissionRationale(context: Context, permission: String): Boolean {

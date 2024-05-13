@@ -77,4 +77,5 @@ dependencies {
     implementation(libs.bundles.worker)
     androidTestImplementation(libs.work.testing)
     ksp(libs.room.compiler)
+    testImplementation(libs.bundles.test)
 }

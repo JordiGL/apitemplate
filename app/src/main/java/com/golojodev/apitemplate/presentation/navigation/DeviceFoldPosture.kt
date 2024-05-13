@@ -14,12 +14,14 @@ sealed interface DeviceFoldPosture {
     ) : DeviceFoldPosture
     object NormalPosture : DeviceFoldPosture
 }
+
 @OptIn(ExperimentalContracts::class)
 fun isBookPosture(foldFeature: FoldingFeature?): Boolean {
     contract { returns(true) implies (foldFeature != null) }
     return foldFeature?.state == FoldingFeature.State.HALF_OPENED &&
-            foldFeature.orientation == FoldingFeature.Orientation.VERTICAL
+        foldFeature.orientation == FoldingFeature.Orientation.VERTICAL
 }
+
 @OptIn(ExperimentalContracts::class)
 fun isSeparating(foldFeature: FoldingFeature?): Boolean {
     contract { returns(true) implies (foldFeature != null) }

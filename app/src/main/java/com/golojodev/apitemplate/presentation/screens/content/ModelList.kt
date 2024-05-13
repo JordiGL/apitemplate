@@ -12,7 +12,7 @@ fun ModelList(
     modifier: Modifier,
     models: List<Model>,
     onFavoriteClicked: (Model) -> Unit,
-    onClicked: (Model) -> Unit,
+    onClicked: (Model) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()

@@ -85,10 +85,10 @@ class MainActivity : ComponentActivity() {
                     }
                     WindowWidthSizeClass.Medium -> {
                         navigationType = NavigationType.NavigationRail
-                        contentType = if (devicePosture is DeviceFoldPosture.
-                            BookPosture
-                            || devicePosture is DeviceFoldPosture.
-                            SeparatingPosture
+                        contentType = if (devicePosture is DeviceFoldPosture
+                            .BookPosture ||
+                            devicePosture is DeviceFoldPosture
+                            .SeparatingPosture
                         ) {
                             ContentType.ListAndDetail
                         } else {
@@ -96,8 +96,9 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     WindowWidthSizeClass.Expanded -> {
-                        navigationType = if (devicePosture is DeviceFoldPosture.
-                            BookPosture) {
+                        navigationType = if (devicePosture is DeviceFoldPosture
+                            .BookPosture
+                        ) {
                             NavigationType.NavigationRail
                         } else {
                             NavigationType.NavigationDrawer
@@ -189,11 +190,11 @@ class MainActivity : ComponentActivity() {
                         .build()
                 )
                 .build()
-        WorkManager.getInstance(applicationContext).
-        enqueueUniqueWork(
-            "ModelsSyncWorker",
-            ExistingWorkPolicy.KEEP,
-            syncModelsWorkRequest
-        )
+        WorkManager.getInstance(applicationContext)
+            .enqueueUniqueWork(
+                "ModelsSyncWorker",
+                ExistingWorkPolicy.KEEP,
+                syncModelsWorkRequest
+            )
     }
 }

@@ -22,7 +22,7 @@ fun AppNavigationContent(
     onDrawerClicked: () -> Unit = {}
 ) {
     Row(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         AnimatedVisibility(
             visible = navigationType == NavigationType.NavigationRail

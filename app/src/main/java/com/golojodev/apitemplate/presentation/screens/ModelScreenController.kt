@@ -44,7 +44,7 @@ fun ModelScreenController(
                     modifier = Modifier.fillMaxWidth(),
                     models = uiState.models,
                     onFavoriteClicked = onFavoriteClicked,
-                    onClicked = onModelClicked,
+                    onClicked = onModelClicked
                 )
             } else {
                 ModelListAndDetails(

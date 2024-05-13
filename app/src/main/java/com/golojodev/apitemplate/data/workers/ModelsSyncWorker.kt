@@ -9,7 +9,7 @@ class ModelsSyncWorker(
     appContext: Context,
     workerParams: WorkerParameters,
     private val modelRepository: ModelRepository
-): CoroutineWorker(appContext, workerParams) {
+) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
         return try {
             modelRepository.fetchRemoteModels()

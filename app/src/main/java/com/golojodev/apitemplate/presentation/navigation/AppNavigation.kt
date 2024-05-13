@@ -21,11 +21,11 @@ fun AppNavigation(
     NavHost(
         navController = navController,
         startDestination = Screens.Home.route
-    ){
-        composable(Screens.Home.route){
+    ) {
+        composable(Screens.Home.route) {
             HomeScreen(
                 contentType = contentType
-            ){
+            ) {
                 navController.navigate(
                     "${Screens.Details.route}/${Json.encodeToString(it)}"
                 )
@@ -34,14 +34,14 @@ fun AppNavigation(
         composable(
             "${Screens.Details.route}/{model}",
             arguments = listOf(
-                navArgument("model"){
+                navArgument("model") {
                     type = NavType.StringType
                 }
             )
-        ){
+        ) {
             DetailsScreen(
-                model = Json.decodeFromString(it.arguments?.getString("model") ?: ""),
-            ){
+                model = Json.decodeFromString(it.arguments?.getString("model") ?: "")
+            ) {
                 navController.popBackStack()
             }
         }

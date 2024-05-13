@@ -26,7 +26,7 @@ fun DetailsScreen(model: Model, onBackPressed: () -> Unit) {
                     Text(text = "Details")
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
                     IconButton(

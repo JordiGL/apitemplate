@@ -26,8 +26,8 @@ val appModules = module {
         Retrofit.Builder().addConverterFactory(
             Json.asConverterFactory(contentType = "application/json".toMediaType())
         )
-        .baseUrl(BASE_URL)
-        .build()
+            .baseUrl(BASE_URL)
+            .build()
     }
     single { get<Retrofit>().create(ServiceAPI::class.java) }
     single { Dispatchers.IO }

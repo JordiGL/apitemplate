@@ -18,29 +18,29 @@ class ModelRepositoryImpl(
 ) : ModelRepository {
     override suspend fun getModels(): Flow<List<Model>> {
         return withContext(dispatcher) {
-           modelDao.getModels()
-               .map {modelsCatched ->
-                   modelsCatched.map { modelEntity ->
-                       Model(
-                           id = modelEntity.id,
-                           name = modelEntity.name,
-                           tags = modelEntity.tags,
-                           isFavorite = modelEntity.isFavorite
-                       )
-                   }
-               }
-               .onEach {
-                   if(it.isEmpty()){
-                       fetchRemoteModels()
-                   }
-               }
+            modelDao.getModels()
+                .map { modelsCatched ->
+                    modelsCatched.map { modelEntity ->
+                        Model(
+                            id = modelEntity.id,
+                            name = modelEntity.name,
+                            tags = modelEntity.tags,
+                            isFavorite = modelEntity.isFavorite
+                        )
+                    }
+                }
+                .onEach {
+                    if (it.isEmpty()) {
+                        fetchRemoteModels()
+                    }
+                }
         }
     }
 
     override suspend fun fetchRemoteModels() {
         withContext(dispatcher) {
-            //val response = serviceAPI.fetchData("cute")
-            val response : Response<List<Model>> = Response.success(
+            // val response = serviceAPI.fetchData("cute")
+            val response: Response<List<Model>> = Response.success(
                 listOf(
                     Model(1, "Model 1", listOf("tag1", "tag2")),
                     Model(2, "Model 2", listOf("tag1", "tag2"))
@@ -81,7 +81,7 @@ class ModelRepositoryImpl(
                     modelsCached.map { modelEntity ->
                         Model(
                             id = modelEntity.id,
-                            name  = modelEntity.name,
+                            name = modelEntity.name,
                             tags = modelEntity.tags,
                             isFavorite = modelEntity.isFavorite
                         )

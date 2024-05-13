@@ -12,7 +12,7 @@ import androidx.room.TypeConverters
         AutoMigration(from = 1, to = 2)
     ]
 )
-@TypeConverters(PetsTypeConverters::class)
-abstract class ModelDatabase: RoomDatabase() {
+@TypeConverters(ModelsTypeConverters::class)
+abstract class ModelDatabase : RoomDatabase() {
     abstract fun modelDao(): ModelDao
 }

@@ -49,8 +49,10 @@ fun PermissionDialog(
         AlertDialog(
             onDismissRequest = {
                 isDialogDismissed = true
-                permissionAction(PermissionAction.
-                PermissionDenied)
+                permissionAction(
+                    PermissionAction
+                        .PermissionDenied
+                )
             },
             title = { Text(text = title) },
             text = { Text(text = text) },
@@ -68,8 +70,10 @@ fun PermissionDialog(
                 Button(
                     onClick = {
                         isDialogDismissed = true
-                        permissionAction(PermissionAction.
-                        PermissionDenied)
+                        permissionAction(
+                            PermissionAction
+                                .PermissionDenied
+                        )
                     }
                 ) {
                     Text(text = dismissText)

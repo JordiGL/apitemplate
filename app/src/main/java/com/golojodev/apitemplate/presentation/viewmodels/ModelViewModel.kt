@@ -26,7 +26,7 @@ class ModelViewModel(
         getModels()
     }
 
-    fun getModels(){
+    fun getModels() {
         uiState.value = UIState(isLoading = true)
         viewModelScope.launch {
             modelRepository.getModels().asResult().collect { result ->

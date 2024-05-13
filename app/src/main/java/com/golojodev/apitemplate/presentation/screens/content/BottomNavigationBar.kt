@@ -20,7 +20,8 @@ fun BottomNavigationBar(
     onHomeClicked: () -> Unit
 ) {
     val items = listOf(
-        Screens.Home, Screens.Favorite
+        Screens.Home,
+        Screens.Favorite
     )
     val selectedItem = remember { mutableStateOf(items[0]) }
     NavigationBar(
