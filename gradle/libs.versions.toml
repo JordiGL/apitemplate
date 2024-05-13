@@ -62,7 +62,6 @@ work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "work"
 workmanager-koin = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koinCore" }
 work-testing = { module = "androidx.work:work-testing", version.ref = "work" }
 
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

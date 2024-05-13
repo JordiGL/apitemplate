@@ -46,7 +46,13 @@ fun AppNavigation(
             }
         }
         composable(Screens.Favorite.route) {
-            FavoriteScreen()
+            FavoriteScreen(
+                onClicked = { model ->
+                    navController.navigate(
+                        "${Screens.Details.route}/${Json.encodeToString(model)}"
+                    )
+                }
+            )
         }
     }
 }

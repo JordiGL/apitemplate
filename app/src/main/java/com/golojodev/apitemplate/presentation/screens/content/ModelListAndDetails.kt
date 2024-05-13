@@ -14,20 +14,24 @@ import androidx.compose.ui.unit.dp
 import com.golojodev.apitemplate.domain.models.Model
 
 @Composable
-fun ModelListAndDetails(models: List<Model>) {
+fun ModelListAndDetails(
+    models: List<Model>,
+    onFavoriteClicked: (Model) -> Unit
+) {
     var currentModel by remember { mutableStateOf(models.first()) }
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         ModelList(
-            onClicked = {
-                currentModel = it
-            },
-            models = models,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .weight(1f),
+            models = models,
+            onFavoriteClicked = onFavoriteClicked,
+            onClicked = {
+                currentModel = it
+            }
         )
         DetailsScreenContent(
             modifier = Modifier

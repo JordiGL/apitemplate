@@ -20,6 +20,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import androidx.window.layout.FoldingFeature
 import androidx.window.layout.WindowInfoTracker
+import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.golojodev.apitemplate.data.workers.ModelsSyncWorker
 import com.golojodev.apitemplate.presentation.navigation.AppNavigationContent
 import com.golojodev.apitemplate.presentation.navigation.ContentType
 import com.golojodev.apitemplate.presentation.navigation.DeviceFoldPosture
@@ -39,6 +45,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        startModelsSync()
         val deviceFoldingPostureFlow = WindowInfoTracker.getOrCreate(this).windowLayoutInfo(this)
             .flowWithLifecycle(this.lifecycle)
             .map { layoutInfo ->
@@ -170,5 +177,23 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun startModelsSync() {
+        val syncModelsWorkRequest =
+            OneTimeWorkRequestBuilder<ModelsSyncWorker>()
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .setRequiresBatteryNotLow(true)
+                        .build()
+                )
+                .build()
+        WorkManager.getInstance(applicationContext).
+        enqueueUniqueWork(
+            "ModelsSyncWorker",
+            ExistingWorkPolicy.KEEP,
+            syncModelsWorkRequest
+        )
     }
 }

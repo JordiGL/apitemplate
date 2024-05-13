@@ -22,9 +22,9 @@ fun ModelScreenController(
     modifier: Modifier,
     contentType: ContentType,
     uiState: UIState,
+    onFavoriteClicked: (Model) -> Unit,
     onModelClicked: (Model) -> Unit
 ) {
-
     Column(
         modifier = modifier
             .padding(16.dp),
@@ -41,12 +41,16 @@ fun ModelScreenController(
         ) {
             if (contentType == ContentType.List) {
                 ModelList(
-                    onClicked = onModelClicked,
+                    modifier = Modifier.fillMaxWidth(),
                     models = uiState.models,
-                    modifier = Modifier.fillMaxWidth()
+                    onFavoriteClicked = onFavoriteClicked,
+                    onClicked = onModelClicked,
                 )
             } else {
-                ModelListAndDetails(models = uiState.models)
+                ModelListAndDetails(
+                    models = uiState.models,
+                    onFavoriteClicked = onFavoriteClicked
+                )
             }
         }
         AnimatedVisibility(

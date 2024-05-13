@@ -1,6 +1,9 @@
 package com.golojodev.apitemplate.di
 
+import androidx.room.Room
+import com.golojodev.apitemplate.data.ModelDatabase
 import com.golojodev.apitemplate.data.service.ServiceAPI
+import com.golojodev.apitemplate.data.workers.ModelsSyncWorker
 import com.golojodev.apitemplate.domain.repositories.ModelRepository
 import com.golojodev.apitemplate.domain.repositories.ModelRepositoryImpl
 import com.golojodev.apitemplate.presentation.viewmodels.ModelViewModel
@@ -8,6 +11,8 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -16,7 +21,7 @@ const val BASE_URL = "https://api.example.com"
 
 val appModules = module {
     single { ModelViewModel(get()) }
-    single<ModelRepository> { ModelRepositoryImpl(get(), get()) }
+    single<ModelRepository> { ModelRepositoryImpl(get(), get(), get()) }
     single {
         Retrofit.Builder().addConverterFactory(
             Json.asConverterFactory(contentType = "application/json".toMediaType())
@@ -26,4 +31,13 @@ val appModules = module {
     }
     single { get<Retrofit>().create(ServiceAPI::class.java) }
     single { Dispatchers.IO }
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            ModelDatabase::class.java,
+            "model-database"
+        ).build()
+    }
+    single { get<ModelDatabase>().modelDao() }
+    worker { ModelsSyncWorker(get(), get(), get()) }
 }

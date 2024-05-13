@@ -1,5 +1,6 @@
 package com.golojodev.apitemplate.presentation.screens.content
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -8,16 +9,18 @@ import com.golojodev.apitemplate.domain.models.Model
 
 @Composable
 fun ModelList(
-    onClicked: (Model) -> Unit,
+    modifier: Modifier,
     models: List<Model>,
-    modifier: Modifier
+    onFavoriteClicked: (Model) -> Unit,
+    onClicked: (Model) -> Unit,
 ) {
     LazyColumn(
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     ) {
         items(models) { model ->
             ModelListItem(
                 model = model,
+                onFavoriteClicked = onFavoriteClicked,
                 onClicked = onClicked
             )
         }

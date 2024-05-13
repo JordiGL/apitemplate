@@ -212,7 +212,8 @@ interface ServiceAPI {
        @SerialName("_id")   
        val id: Int,
        @SerialName("title")
-       val name: String
+       val name: String,
+       val tags: List<String>
    )
 ```
 
@@ -222,6 +223,356 @@ interface ServiceAPI {
 val appModules = module {
     ***
     single { get<Retrofit>().create(ServiceAPI::class.java) }
+}
+```
+
+# Room / Base de dades local
+
+## **Llibreria**
+
+1. libs.versions.toml
+
+```en-GB-oxendict
+   room = "2.5.2"
+
+   room-runtime = { module = "androidx.room:room-runtime" , version.ref ="room" }
+   room-compiler = { module = "androidx.room:room-compiler", version.ref= "room" }
+   room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+   
+   room = ["room-runtime","room-ktx"]
+```
+
+2. build.gradle.kts (Project)
+
+```en-GB-oxendict
+    id("com.google.devtools.ksp") version "1.9.0-1.0.13" apply false
+```
+
+3. build.gradle.kts (Module)
+
+```en-GB-oxendict
+   plugins {
+       ...
+       id("com.google.devtools.ksp")
+   }
+   
+   android {
+      ...
+      ksp {
+         arg("room.schemaLocation", "$projectDir/schemas")
+      }
+   }
+   
+   dependencies {
+   ...
+      implementation(libs.bundles.room)
+      ksp(libs.room.compiler)
+   }
+```
+
+## **Pas a pas**
+
+1. Crear la classe Entity que generara la taula a guardar a la base de dades.
+
+```en-GB-oxendict
+   @Entity( tableName = "Model")
+   data class ModelEntity(
+      @PrimaryKey
+      val id: Int,
+      val name: String,
+      val tags: List<String>
+   )
+```
+
+2. S'han de convertir els tipus de les propietatsa a tipus primitius. Ex: de List<String> a String 
+
+```en-GB-oxendict
+class PetsTypeConverters {
+   @TypeConverter
+   fun convertTagsToString(tags: List<String>): String {
+      return Json.encodeToString(tags)
+   }
+   @TypeConverter
+   fun convertStringToTags(tags: String): List<String> {
+      return Json.decodeFromString(tags)
+   }
+}
+```
+
+3. Creem la classe DAO que defineix els metodes create, read, update per a gestionar la base de dades
+
+```en-GB-oxendict
+   @Dao
+   interface ModelDao {
+      @Insert(onConflict = OnConflictStrategy.REPLACE)
+      suspend fun insert(modelEntity: ModelEntity)
+      @Query("SELECT * FROM Model")
+      fun getModels(): Flow<List<ModelEntity>>
+   }
+```
+
+4. Creem la classe de la base de dades
+
+```en-GB-oxendict
+   @Database(
+       entities = [ModelEntity::class],
+       version = 1
+   )
+   @TypeConverters(PetsTypeConverters::class)
+   abstract class ModelDatabase: RoomDatabase() {
+       abstract fun modelDao(): ModelDao
+   }
+```
+
+5. Afegim el modul de la base de dades
+
+```en-GB-oxendict
+   single {
+      Room.databaseBuilder(
+         androidContext(),
+         ModelDatabase::class.java,
+         "model-database"
+      ).build()
+   }
+   single { get<ModelDatabase>().modelDao() }
+```
+
+6. Modifiquem el repository
+
+```en-GB-oxendict
+interface ModelRepository {
+    suspend fun getModels(): Flow<List<Model>>
+    suspend fun fetchRemoteModels()
+}
+```
+
+```en-GB-oxendict
+class ModelRepositoryImpl(
+    private val serviceAPI: ServiceAPI,
+    private val dispatcher: CoroutineDispatcher,
+    private val modelDao: ModelDao
+) : ModelRepository {
+    override suspend fun getModels(): Flow<List<Model>> {
+        return withContext(dispatcher) {
+           modelDao.getModels()
+               .map {modelsCatched ->
+                   modelsCatched.map { modelEntity ->
+                       Model(
+                           id = modelEntity.id,
+                           name = modelEntity.name,
+                           tags = modelEntity.tags
+                       )
+                   }
+               }
+               .onEach {
+                   if(it.isEmpty()){
+                       fetchRemoteModels()
+                   }
+               }
+        }
+    }
+
+    override suspend fun fetchRemoteModels() {
+        withContext(dispatcher) {
+            val response = serviceAPI.fetchData("cute")
+            if (response.isSuccessful) {
+                response.body()!!.map {
+                    modelDao.insert(
+                        ModelEntity(
+                            id = it.id,
+                            name = it.name,
+                            tags = it.tags
+                        )
+                    )
+                }
+            }
+        }
+    }
+}
+```
+
+6. Modifiquem els module del repository
+
+```en-GB-oxendict
+val appModules = module {
+    ***
+    single<ModelRepository> { ModelRepositoryImpl(get(), get(), get()) }
+}
+```
+
+7. Creem l'extensio del Flow que gestionara el resultat i el convertira a NetworkResult, i modifiquem el ModelViewModel.
+
+```en-GB-oxendict
+fun <T> Flow<T>.asResult(): Flow<NetworkResult<T>> {
+    return this
+        .map<T, NetworkResult<T>> {
+            NetworkResult.Success(it)
+        }
+        .catch { emit(NetworkResult.Error(it.message.toString())) }
+}
+```
+
+```en-GB-oxendict
+class ModelViewModel(
+    private val modelRepository: ModelRepository
+) : ViewModel() {
+    val uiState = MutableStateFlow(UIState())
+
+    init {
+        getModels()
+    }
+
+    fun getModels(){
+        uiState.value = UIState(isLoading = true)
+        viewModelScope.launch {
+            modelRepository.getModels().asResult().collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        uiState.update {
+                            it.copy(isLoading = false, models = result.data)
+                        }
+                    }
+
+                    is NetworkResult.Error -> {
+                        uiState.update {
+                            it.copy(isLoading = false, error = result.error)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+8. Proveeim el context de l'aplicacio a Koin modificant l'arxiu ApiTemplateApplication
+
+```en-GB-oxendict
+class ApiTemplateApplication: Application() {
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(applicationContext)
+            modules(appModules)
+        }
+    }
+}
+```
+# WorkManager
+
+WorkManager és una biblioteca de Jetpack ideal per realitzar tasques de llarga durada en segon pla.
+
+## **Llibreria**
+
+1. libs.versions.toml
+
+```en-GB-oxendict
+   work = "2.8.1"
+
+   work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
+   workmanager-koin = { module = "io.insert-koin:koin-androidxworkmanager", version.ref = "koin" }
+   
+   worker = ["work-runtime","workmanager-koin"]
+```
+
+2. build.gradle.kts (Module)
+
+```en-GB-oxendict   
+   dependencies {
+      ...
+      implementation(libs.bundles.worker)
+   }
+```
+
+## **Pas a pas**
+
+1. Utilitzarem WorkManager per obtenir les dades de la API
+
+```en-GB-oxendict
+   class ModelsSyncWorker(
+       appContext: Context,
+       workerParams: WorkerParameters,
+       private val modelRepository: ModelRepository
+   ): CoroutineWorker(appContext, workerParams) {
+       override suspend fun doWork(): Result {
+           return try {
+               modelRepository.fetchRemoteModels()
+               Result.success()
+           } catch (e: Exception) {
+               Result.failure()
+           }
+       }
+   }
+```
+
+2. Afegirem el modul
+
+```en-GB-oxendict
+   class ModelsSyncWorker(
+       appContext: Context,
+       workerParams: WorkerParameters,
+       private val modelRepository: ModelRepository
+   ): CoroutineWorker(appContext, workerParams) {
+       override suspend fun doWork(): Result {
+           return try {
+               modelRepository.fetchRemoteModels()
+               Result.success()
+           } catch (e: Exception) {
+               Result.failure()
+           }
+       }
+   }
+```
+
+3. Crearem el metode en el MainActivity per a iniciar el worker, i l'iniciem en el onCreate
+
+```en-GB-oxendict
+    private fun startModelsSync() {
+        val syncModelsWorkRequest =
+            OneTimeWorkRequestBuilder<ModelsSyncWorker>()
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .setRequiresBatteryNotLow(true)
+                        .build()
+                )
+                .build()
+        WorkManager.getInstance(applicationContext).
+        enqueueUniqueWork(
+            "ModelsSyncWorker",
+            ExistingWorkPolicy.KEEP,
+            syncModelsWorkRequest
+        )
+    }
+```
+
+3. Afegim el provider en el AndroidManifest
+
+```en-GB-oxendict
+<provider
+   android:name="androidx.startup.InitializationProvider"
+   android:authorities="${applicationId}.androidx-startup"
+   android:exported="false"
+   tools:node="merge">
+   <!-- Removing WorkManager Default Initializer-->
+   <meta-data
+      android:name="androidx.work.WorkManagerInitializer"
+      android:value="androidx.startup"
+      tools:node="remove" />
+</provider>
+```
+
+4. Modifiquem l'starKoin del ApiTemplateApplication
+
+```en-GB-oxendict
+class MasteringKotlinApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            ***
+            workManagerFactory()
+        }
+    }
 }
 ```
 

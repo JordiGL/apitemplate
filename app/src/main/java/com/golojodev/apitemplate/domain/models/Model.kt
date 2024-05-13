@@ -8,5 +8,8 @@ data class Model(
     @SerialName("_id")
     val id: Int,
     @SerialName("title")
-    val name: String
+    val name: String,
+    @SerialName("tags")
+    val tags: List<String>,
+    val isFavorite: Boolean = false
 )
