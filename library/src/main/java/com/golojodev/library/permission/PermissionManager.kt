@@ -1,4 +1,4 @@
-package com.golojodev.apitemplate.core.permissions
+package com.golojodev.library.permission
 
 import android.app.Activity
 import android.content.Context

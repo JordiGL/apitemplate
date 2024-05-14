@@ -75,6 +75,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation(project(":library"))
     implementation(libs.bundles.koin)
     implementation(libs.bundles.networking)
     implementation(libs.coil)

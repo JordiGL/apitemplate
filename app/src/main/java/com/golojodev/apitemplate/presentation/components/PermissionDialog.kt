@@ -1,4 +1,4 @@
-package com.golojodev.apitemplate.core.permissions.view
+package com.golojodev.apitemplate.presentation.components
 
 import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,9 +12,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.golojodev.apitemplate.core.permissions.PermissionAction
-import com.golojodev.apitemplate.core.permissions.PermissionManager.checkIfPermissionGranted
-import com.golojodev.apitemplate.core.permissions.PermissionManager.shouldShowPermissionRationale
+import com.golojodev.library.permission.PermissionAction
+import com.golojodev.library.permission.PermissionManager.checkIfPermissionGranted
+import com.golojodev.library.permission.PermissionManager.shouldShowPermissionRationale
 
 @Composable
 fun PermissionDialog(

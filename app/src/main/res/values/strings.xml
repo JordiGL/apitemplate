@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Apitemplate</string>
+    <string name="package_id">com.golojodev.apitemplate</string>
 </resources>

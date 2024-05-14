@@ -10,11 +10,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.golojodev.apitemplate.core.permissions.PermissionAction
-import com.golojodev.apitemplate.core.permissions.view.PermissionDialog
 import com.golojodev.apitemplate.domain.models.Model
+import com.golojodev.apitemplate.presentation.components.PermissionDialog
 import com.golojodev.apitemplate.presentation.navigation.ContentType
 import com.golojodev.apitemplate.presentation.viewmodels.ModelViewModel
+import com.golojodev.library.permission.PermissionAction
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

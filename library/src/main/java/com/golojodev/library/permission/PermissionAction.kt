@@ -1,4 +1,4 @@
-package com.golojodev.apitemplate.core.permissions
+package com.golojodev.library.permission
 
 sealed class PermissionAction {
     data object PermissionGranted : PermissionAction()
