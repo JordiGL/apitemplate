@@ -28,6 +28,7 @@ mockWebServer = "5.0.0-alpha.2"
 coroutinesTest = "1.7.3"
 truth = "1.1.5"
 mockk = "1.13.10"
+jetbrainsKotlinJvm = "1.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -73,6 +74,7 @@ test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 [bundles]
 koin = ["koin-core","koin-android","koin-androidx-compose"]

@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Apitemplate"
 include(":app")
+include(":golojolib")

@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.20" apply false
     id("com.google.devtools.ksp") version "1.9.0-1.0.13" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
+    alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }
 
 subprojects {
