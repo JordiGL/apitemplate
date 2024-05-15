@@ -116,10 +116,10 @@ class MainActivity : ComponentActivity() {
                             PermanentDrawerSheet {
                                 CustomNavigationDrawer(
                                     onFavoriteClicked = {
-                                        navController.navigate(Screens.Favorite.route)
+                                        navController.navigate(Screens.Favorite)
                                     },
                                     onHomeClicked = {
-                                        navController.navigate(Screens.Home.route)
+                                        navController.navigate(Screens.Home)
                                     }
                                 )
                             }
@@ -129,10 +129,10 @@ class MainActivity : ComponentActivity() {
                             navigationType = navigationType,
                             contentType = contentType,
                             onFavoriteClicked = {
-                                navController.navigate(Screens.Favorite.route)
+                                navController.navigate(Screens.Favorite)
                             },
                             onHomeClicked = {
-                                navController.navigate(Screens.Home.route)
+                                navController.navigate(Screens.Home)
                             },
                             navController = navController
                         )
@@ -143,10 +143,10 @@ class MainActivity : ComponentActivity() {
                             ModalDrawerSheet {
                                 CustomNavigationDrawer(
                                     onFavoriteClicked = {
-                                        navController.navigate(Screens.Favorite.route)
+                                        navController.navigate(Screens.Favorite)
                                     },
                                     onHomeClicked = {
-                                        navController.navigate(Screens.Home.route)
+                                        navController.navigate(Screens.Home)
                                     },
                                     onDrawerClicked = {
                                         scope.launch {
@@ -162,10 +162,10 @@ class MainActivity : ComponentActivity() {
                             navigationType = navigationType,
                             contentType = contentType,
                             onFavoriteClicked = {
-                                navController.navigate(Screens.Favorite.route)
+                                navController.navigate(Screens.Favorite)
                             },
                             onHomeClicked = {
-                                navController.navigate(Screens.Home.route)
+                                navController.navigate(Screens.Home)
                             },
                             navController = navController,
                             onDrawerClicked = {

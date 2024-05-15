@@ -1,7 +1,14 @@
 package com.golojodev.apitemplate.presentation.navigation
 
-sealed class Screens(val route: String) {
-    object Home : Screens("home")
-    object Details : Screens("details")
-    object Favorite : Screens("favorite")
+import kotlinx.serialization.Serializable
+
+sealed class Screens {
+    @Serializable
+    object Home
+
+    @Serializable
+    data class Details(val model: String)
+
+    @Serializable
+    object Favorite
 }

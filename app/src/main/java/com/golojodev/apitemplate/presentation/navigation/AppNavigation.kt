@@ -2,11 +2,10 @@ package com.golojodev.apitemplate.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.golojodev.apitemplate.presentation.screens.DetailsScreen
 import com.golojodev.apitemplate.presentation.screens.FavoriteScreen
 import com.golojodev.apitemplate.presentation.screens.HomeScreen
@@ -20,36 +19,29 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screens.Home.route
+        startDestination = Screens.Home
     ) {
-        composable(Screens.Home.route) {
+        composable<Screens.Home> {
             HomeScreen(
                 contentType = contentType
             ) {
                 navController.navigate(
-                    "${Screens.Details.route}/${Json.encodeToString(it)}"
+                    Screens.Details(Json.encodeToString(it))
                 )
             }
         }
-        composable(
-            "${Screens.Details.route}/{model}",
-            arguments = listOf(
-                navArgument("model") {
-                    type = NavType.StringType
-                }
-            )
-        ) {
+        composable<Screens.Details> {
             DetailsScreen(
-                model = Json.decodeFromString(it.arguments?.getString("model") ?: "")
+                model = Json.decodeFromString(it.toRoute<Screens.Details>().model)
             ) {
                 navController.popBackStack()
             }
         }
-        composable(Screens.Favorite.route) {
+        composable<Screens.Favorite> {
             FavoriteScreen(
-                onClicked = { model ->
+                onClicked = {
                     navController.navigate(
-                        "${Screens.Details.route}/${Json.encodeToString(model)}"
+                        Screens.Details(Json.encodeToString(it))
                     )
                 }
             )
