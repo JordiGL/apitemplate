@@ -6,13 +6,15 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [ModelEntity::class],
-    version = 2,
+    entities = [ModelEntity::class, ThemeStateEntity::class],
+    version = 4,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
+        AutoMigration(from = 3, to = 4)
     ]
 )
 @TypeConverters(ModelsTypeConverters::class)
 abstract class ModelDatabase : RoomDatabase() {
     abstract fun modelDao(): ModelDao
+
+    abstract fun themeStateDao(): ThemeStateDao
 }

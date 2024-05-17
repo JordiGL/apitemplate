@@ -14,10 +14,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.golojodev.apitemplate.presentation.screens.content.SettingsScreenContent
+import com.golojodev.apitemplate.presentation.viewmodels.ThemeViewModel
+import com.golojodev.library.style.ThemeStateManager
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
+    themeViewModel: ThemeViewModel = koinViewModel(),
     onBackPressed: () -> Unit
 ) {
     Scaffold(
@@ -26,7 +30,7 @@ fun SettingsScreen(
                 title = {
                     Text(text = "Settings")
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
@@ -44,7 +48,12 @@ fun SettingsScreen(
         },
         content = { paddingValues ->
             SettingsScreenContent(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues),
+                onThemeChange = {
+                    ThemeStateManager.toggle {
+                        themeViewModel.setTheme(it)
+                    }
+                }
             )
         }
     )

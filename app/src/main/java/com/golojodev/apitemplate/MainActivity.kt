@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -34,11 +35,14 @@ import com.golojodev.apitemplate.presentation.navigation.Screens
 import com.golojodev.apitemplate.presentation.navigation.isBookPosture
 import com.golojodev.apitemplate.presentation.navigation.isSeparating
 import com.golojodev.apitemplate.presentation.screens.content.CustomNavigationDrawer
+import com.golojodev.apitemplate.presentation.viewmodels.ThemeViewModel
 import com.golojodev.apitemplate.ui.theme.ApitemplateTheme
+import com.golojodev.library.style.ThemeStateManager
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -75,7 +79,14 @@ class MainActivity : ComponentActivity() {
             val scope = rememberCoroutineScope()
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val navController = rememberNavController()
-            ApitemplateTheme {
+            val themeViewModel: ThemeViewModel = koinViewModel()
+
+            ThemeStateManager.init(
+                state = themeViewModel.themeState.collectAsStateWithLifecycle(),
+                isDark = isSystemInDarkTheme()
+            )
+
+            ApitemplateTheme(darkTheme = ThemeStateManager.isDark()) {
                 val navigationType: NavigationType
                 val contentType: ContentType
                 when (windowSizeClass.widthSizeClass) {

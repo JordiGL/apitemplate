@@ -22,7 +22,7 @@ import com.golojodev.apitemplate.presentation.components.CustomListItem
 fun SettingsScreenContent(
     modifier: Modifier = Modifier,
     theme: String = "Dark",
-    onThemeClick: () -> Unit = {}
+    onThemeChange: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -45,7 +45,7 @@ fun SettingsScreenContent(
                 Text(text = theme)
             }
         ) {
-            onThemeClick()
+            onThemeChange()
         }
         CustomListItem(
             leadingContent = {

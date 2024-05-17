@@ -8,27 +8,19 @@ import androidx.compose.runtime.State
 object ThemeStateManager {
     private lateinit var state: State<ThemeState>
     private var isDark: Boolean = false
-    private var iconDark: Int? = null
-    private var iconLight: Int? = null
 
     /**
      * Inicialitza l'estat del tema de l'aplicació.
      *
      * @param state Estat del tema mitjançant un objecte State de Jetpack Compose.
      * @param isDark Indica si el tema inicial ha de ser fosc (true) o clar (false).
-     * @param iconDark ID del recurs drawable de l'icona per al mode fosc.
-     * @param iconLight ID del recurs drawable de l'icona per al mode clar.
      */
     fun init(
         state: State<ThemeState>,
-        isDark: Boolean,
-        iconDark: Int,
-        iconLight: Int
+        isDark: Boolean
     ) {
         ThemeStateManager.isDark = isDark
         ThemeStateManager.state = state
-        ThemeStateManager.iconDark = iconDark
-        ThemeStateManager.iconLight = iconLight
     }
 
     /**
@@ -57,22 +49,6 @@ object ThemeStateManager {
             ThemeState.DEFAULT -> when (isDark) {
                 true -> updateThemeState(ThemeState.LIGHT)
                 false -> updateThemeState(ThemeState.DARK)
-            }
-        }
-    }
-
-    /**
-     * Recupera la icona adequada en funció de l'estat del tema.
-     *
-     * @return ID del recurs drawable de la icona segons el tema (clar o fosc).
-     */
-    fun getIcon(): Int? {
-        return when (state.value) {
-            ThemeState.DARK -> iconLight
-            ThemeState.LIGHT -> iconDark
-            ThemeState.DEFAULT -> when (isDark) {
-                true -> iconLight
-                false -> iconDark
             }
         }
     }

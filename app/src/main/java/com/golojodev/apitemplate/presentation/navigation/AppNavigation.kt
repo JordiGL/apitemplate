@@ -9,6 +9,7 @@ import androidx.navigation.toRoute
 import com.golojodev.apitemplate.presentation.screens.DetailsScreen
 import com.golojodev.apitemplate.presentation.screens.FavoriteScreen
 import com.golojodev.apitemplate.presentation.screens.HomeScreen
+import com.golojodev.apitemplate.presentation.screens.SettingsScreen
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -23,11 +24,14 @@ fun AppNavigation(
     ) {
         composable<Screens.Home> {
             HomeScreen(
-                contentType = contentType
+                contentType = contentType,
+                onModelClicked = {
+                    navController.navigate(
+                        Screens.Details(Json.encodeToString(it))
+                    )
+                }
             ) {
-                navController.navigate(
-                    Screens.Details(Json.encodeToString(it))
-                )
+                navController.navigate(Screens.Settings)
             }
         }
         composable<Screens.Details> {
@@ -43,6 +47,13 @@ fun AppNavigation(
                     navController.navigate(
                         Screens.Details(Json.encodeToString(it))
                     )
+                }
+            )
+        }
+        composable<Screens.Settings> {
+            SettingsScreen(
+                onBackPressed = {
+                    navController.popBackStack()
                 }
             )
         }

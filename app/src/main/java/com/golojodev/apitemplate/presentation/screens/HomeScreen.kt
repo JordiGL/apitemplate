@@ -20,7 +20,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     contentType: ContentType,
-    onModelClicked: (Model) -> Unit = {}
+    onModelClicked: (Model) -> Unit = {},
+    onSettingsClicked: () -> Unit = {}
 ) {
     val modelViewModel: ModelViewModel = koinViewModel()
     val uiState by modelViewModel.uiState.collectAsStateWithLifecycle()
@@ -49,7 +50,8 @@ fun HomeScreen(
             onFavoriteClicked = {
                 modelViewModel.update(it)
             },
-            onModelClicked = onModelClicked
+            onModelClicked = onModelClicked,
+            onSettingsClicked = onSettingsClicked
         )
     }
 }

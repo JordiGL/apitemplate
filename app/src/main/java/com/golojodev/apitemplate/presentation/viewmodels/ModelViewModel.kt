@@ -19,6 +19,7 @@ class ModelViewModel(
     private val modelRepository: ModelRepository
 ) : ViewModel() {
     val uiState = MutableStateFlow(UIState())
+
     private val _favorites = MutableStateFlow<List<Model>>(emptyList())
     val favorites: StateFlow<List<Model>> get() = _favorites
 

@@ -11,4 +11,7 @@ sealed class Screens {
 
     @Serializable
     object Favorite
+
+    @Serializable
+    object Settings
 }
