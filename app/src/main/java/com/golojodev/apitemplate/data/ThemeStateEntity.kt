@@ -8,6 +8,8 @@ import com.golojodev.library.style.ThemeState
 @Entity(tableName = "ThemeState")
 data class ThemeStateEntity(
     @PrimaryKey
+    @ColumnInfo(defaultValue = "0")
+    val id: Int,
     @ColumnInfo(defaultValue = "DEFAULT")
     val theme: ThemeState
 )

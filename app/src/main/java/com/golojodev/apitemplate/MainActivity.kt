@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import kotlin.time.Duration.Companion.minutes
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -154,7 +155,7 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(Screens.Settings)
                             },
                             onRefreshClicked = {
-                                if (TimeControlHandler.hasTimePassed(minutes = 15)) {
+                                if (TimeControlHandler.hasTimePassed(duration = 1.minutes)) {
                                     mainViewModel.fetchRemoteModels()
                                 }
                             },
@@ -195,7 +196,7 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(Screens.Settings)
                             },
                             onRefreshClicked = {
-                                if (TimeControlHandler.hasTimePassed(minutes = 15)) {
+                                if (TimeControlHandler.hasTimePassed(duration = 1.minutes)) {
                                     mainViewModel.fetchRemoteModels()
                                 }
                             },

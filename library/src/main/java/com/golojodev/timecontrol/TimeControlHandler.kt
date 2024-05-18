@@ -1,7 +1,8 @@
 package com.golojodev.timecontrol
 
-import java.util.Date
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.util.Date
+import kotlin.time.Duration
 
 object TimeControlHandler {
 
@@ -11,10 +12,10 @@ object TimeControlHandler {
         timeThreshold.value = Date().time
     }
 
-    fun hasTimePassed(minutes: Int): Boolean {
+    fun hasTimePassed(duration: Duration): Boolean {
         val currentTime = Date().time
         val differenceInMillis = currentTime - timeThreshold.value
-        if (differenceInMillis >= minutes * 60 * 1000L) {
+        if (differenceInMillis >= duration.inWholeMilliseconds) {
             timeThreshold.value = currentTime
             return true
         } else {

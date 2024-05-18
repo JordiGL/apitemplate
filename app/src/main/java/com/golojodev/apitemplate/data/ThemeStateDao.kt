@@ -15,6 +15,6 @@ interface ThemeStateDao {
     @Update
     suspend fun update(themeStateEntity: ThemeStateEntity)
 
-    @Query("SELECT * FROM ThemeState")
+    @Query("SELECT * FROM ThemeState WHERE id = 0")
     fun getThemeState(): Flow<ThemeStateEntity>
 }

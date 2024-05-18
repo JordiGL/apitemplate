@@ -56,7 +56,7 @@ val appModules = module {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
                     // Insert initial row during database creation
-                    db.execSQL("INSERT OR REPLACE INTO ThemeState (theme) VALUES ('DEFAULT')")
+                    db.execSQL("INSERT OR REPLACE INTO ThemeState (id, theme) VALUES (0,'DEFAULT')")
                 }
             })
             .build()

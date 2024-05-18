@@ -29,7 +29,7 @@ class ThemeViewModel(
             useCaseProvider.onGetTheme().asResult().collect { result ->
                 when (result) {
                     is NetworkResult.Error -> themeState.update { ThemeState.DEFAULT }
-                    is NetworkResult.Success -> themeState.update { result.data }
+                    is NetworkResult.Success -> {themeState.update { result.data }}
                 }
             }
         }

@@ -1,7 +1,7 @@
 package com.golojodev.library.wrapper.language
 
-import java.util.Locale
 import kotlinx.serialization.Serializable
+import java.util.Locale
 
 /**
  * Idiomes que suportarà l'APP

@@ -7,9 +7,9 @@ import androidx.room.TypeConverters
 
 @Database(
     entities = [ModelEntity::class, ThemeStateEntity::class],
-    version = 4,
+    version = 5,
     autoMigrations = [
-        AutoMigration(from = 3, to = 4)
+        AutoMigration(from = 4, to = 5)
     ]
 )
 @TypeConverters(ModelsTypeConverters::class)
