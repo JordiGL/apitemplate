@@ -10,13 +10,17 @@ import com.golojodev.apitemplate.presentation.screens.DetailsScreen
 import com.golojodev.apitemplate.presentation.screens.FavoriteScreen
 import com.golojodev.apitemplate.presentation.screens.HomeScreen
 import com.golojodev.apitemplate.presentation.screens.SettingsScreen
+import com.golojodev.apitemplate.presentation.viewmodels.ThemeViewModel
+import com.golojodev.library.style.ThemeStateManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AppNavigation(
     contentType: ContentType,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    themeViewModel: ThemeViewModel = koinViewModel()
 ) {
     NavHost(
         navController = navController,
@@ -30,16 +34,12 @@ fun AppNavigation(
                         Screens.Details(Json.encodeToString(it))
                     )
                 }
-            ) {
-                navController.navigate(Screens.Settings)
-            }
+            )
         }
         composable<Screens.Details> {
             DetailsScreen(
                 model = Json.decodeFromString(it.toRoute<Screens.Details>().model)
-            ) {
-                navController.popBackStack()
-            }
+            )
         }
         composable<Screens.Favorite> {
             FavoriteScreen(
@@ -52,8 +52,10 @@ fun AppNavigation(
         }
         composable<Screens.Settings> {
             SettingsScreen(
-                onBackPressed = {
-                    navController.popBackStack()
+                onThemeChange = {
+                    ThemeStateManager.toggle {
+                        themeViewModel.setTheme(it)
+                    }
                 }
             )
         }

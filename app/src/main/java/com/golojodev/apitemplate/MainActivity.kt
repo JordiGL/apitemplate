@@ -35,9 +35,11 @@ import com.golojodev.apitemplate.presentation.navigation.Screens
 import com.golojodev.apitemplate.presentation.navigation.isBookPosture
 import com.golojodev.apitemplate.presentation.navigation.isSeparating
 import com.golojodev.apitemplate.presentation.screens.content.CustomNavigationDrawer
+import com.golojodev.apitemplate.presentation.viewmodels.MainViewModel
 import com.golojodev.apitemplate.presentation.viewmodels.ThemeViewModel
 import com.golojodev.apitemplate.ui.theme.ApitemplateTheme
 import com.golojodev.library.style.ThemeStateManager
+import com.golojodev.timecontrol.TimeControlHandler
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -80,18 +82,21 @@ class MainActivity : ComponentActivity() {
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val navController = rememberNavController()
             val themeViewModel: ThemeViewModel = koinViewModel()
+            val mainViewModel: MainViewModel = koinViewModel()
 
             ThemeStateManager.init(
                 state = themeViewModel.themeState.collectAsStateWithLifecycle(),
                 isDark = isSystemInDarkTheme()
             )
 
+            TimeControlHandler.init()
+
             ApitemplateTheme(darkTheme = ThemeStateManager.isDark()) {
                 val navigationType: NavigationType
                 val contentType: ContentType
                 when (windowSizeClass.widthSizeClass) {
                     WindowWidthSizeClass.Compact -> {
-                        navigationType = NavigationType.BottomNavigation
+                        navigationType = NavigationType.NavigationRail
                         contentType = ContentType.List
                     }
                     WindowWidthSizeClass.Medium -> {
@@ -130,20 +135,28 @@ class MainActivity : ComponentActivity() {
                                         navController.navigate(Screens.Favorite)
                                     },
                                     onHomeClicked = {
-                                        navController.navigate(Screens.Home)
+                                        navController.navigate(Screens.Settings)
                                     }
                                 )
                             }
                         }
                     ) {
                         AppNavigationContent(
-                            navigationType = navigationType,
                             contentType = contentType,
+                            navigationType = navigationType,
                             onFavoriteClicked = {
                                 navController.navigate(Screens.Favorite)
                             },
                             onHomeClicked = {
                                 navController.navigate(Screens.Home)
+                            },
+                            onSettingsClicked = {
+                                navController.navigate(Screens.Settings)
+                            },
+                            onRefreshClicked = {
+                                if (TimeControlHandler.hasTimePassed(minutes = 15)) {
+                                    mainViewModel.fetchRemoteModels()
+                                }
                             },
                             navController = navController
                         )
@@ -170,13 +183,21 @@ class MainActivity : ComponentActivity() {
                         drawerState = drawerState
                     ) {
                         AppNavigationContent(
-                            navigationType = navigationType,
                             contentType = contentType,
+                            navigationType = navigationType,
                             onFavoriteClicked = {
                                 navController.navigate(Screens.Favorite)
                             },
                             onHomeClicked = {
                                 navController.navigate(Screens.Home)
+                            },
+                            onSettingsClicked = {
+                                navController.navigate(Screens.Settings)
+                            },
+                            onRefreshClicked = {
+                                if (TimeControlHandler.hasTimePassed(minutes = 15)) {
+                                    mainViewModel.fetchRemoteModels()
+                                }
                             },
                             navController = navController,
                             onDrawerClicked = {

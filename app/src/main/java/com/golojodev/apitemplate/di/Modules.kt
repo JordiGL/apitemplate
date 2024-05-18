@@ -10,7 +10,7 @@ import com.golojodev.apitemplate.domain.repositories.ModelRepository
 import com.golojodev.apitemplate.domain.repositories.ModelRepositoryImpl
 import com.golojodev.apitemplate.domain.repositories.ThemeRepository
 import com.golojodev.apitemplate.domain.repositories.ThemeRepositoryImpl
-import com.golojodev.apitemplate.presentation.viewmodels.ModelViewModel
+import com.golojodev.apitemplate.presentation.viewmodels.MainViewModel
 import com.golojodev.apitemplate.presentation.viewmodels.ThemeViewModel
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ import retrofit2.Retrofit
 const val BASE_URL = "https://api.example.com"
 
 val appModules = module {
-    single { ModelViewModel(get()) }
+    single { MainViewModel(get()) }
     single { ThemeViewModel(get()) }
     single<ModelRepository> { ModelRepositoryImpl(get(), get(), get()) }
     single<ThemeRepository> { ThemeRepositoryImpl(get(), get()) }

@@ -19,7 +19,7 @@ import com.golojodev.apitemplate.ui.theme.ApitemplateTheme
 @Composable
 fun CustomListItem(
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.onSecondary,
+    containerColor: Color = Color.Transparent,
     headlineText: @Composable () -> Unit = {},
     supportingText: @Composable (() -> Unit)? = null,
     overlineContent: @Composable (() -> Unit)? = null,

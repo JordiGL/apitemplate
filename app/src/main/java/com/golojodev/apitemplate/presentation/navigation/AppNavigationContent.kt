@@ -18,6 +18,8 @@ fun AppNavigationContent(
     navigationType: NavigationType,
     onFavoriteClicked: () -> Unit,
     onHomeClicked: () -> Unit,
+    onSettingsClicked: () -> Unit,
+    onRefreshClicked: () -> Unit,
     navController: NavHostController,
     onDrawerClicked: () -> Unit = {}
 ) {
@@ -30,15 +32,15 @@ fun AppNavigationContent(
             CustomNavigationRail(
                 onFavoriteClicked = onFavoriteClicked,
                 onHomeClicked = onHomeClicked,
+                onSettingsClicked = onSettingsClicked,
+                onRefreshClicked = onRefreshClicked,
                 onDrawerClicked = onDrawerClicked
             )
         }
         Scaffold(
-            content = { paddingValues ->
+            content = {
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
+                    modifier = Modifier.fillMaxSize().padding(it)
                 ) {
                     AppNavigation(
                         contentType = contentType,

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ModelRepository {
     suspend fun getModels(): Flow<List<Model>>
-    suspend fun fetchRemoteModels()
+    suspend fun fetchRemoteModels(): Flow<List<Model>>
     suspend fun updateModel(model: Model)
     suspend fun getFavorites(): Flow<List<Model>>
 }

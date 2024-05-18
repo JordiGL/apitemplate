@@ -14,18 +14,18 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.golojodev.apitemplate.domain.models.Model
 import com.golojodev.apitemplate.presentation.screens.content.ModelListItem
-import com.golojodev.apitemplate.presentation.viewmodels.ModelViewModel
+import com.golojodev.apitemplate.presentation.viewmodels.MainViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun FavoriteScreen(
     onClicked: (Model) -> Unit
 ) {
-    val modelViewModel: ModelViewModel = koinViewModel()
+    val mainViewModel: MainViewModel = koinViewModel()
     LaunchedEffect(Unit) {
-        modelViewModel.getFavorites()
+        mainViewModel.getFavorites()
     }
-    val models by modelViewModel.favorites.collectAsStateWithLifecycle()
+    val models by mainViewModel.favorites.collectAsStateWithLifecycle()
 
     if (models.isEmpty()) {
         Column(
@@ -46,7 +46,7 @@ fun FavoriteScreen(
                     model = model,
                     onClicked = onClicked,
                     onFavoriteClicked = {
-                        modelViewModel.update(it)
+                        mainViewModel.update(it)
                     }
                 )
             }

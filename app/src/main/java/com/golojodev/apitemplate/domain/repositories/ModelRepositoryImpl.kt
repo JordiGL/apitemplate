@@ -6,6 +6,7 @@ import com.golojodev.apitemplate.data.service.ServiceAPI
 import com.golojodev.apitemplate.domain.models.Model
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
@@ -37,8 +38,8 @@ class ModelRepositoryImpl(
         }
     }
 
-    override suspend fun fetchRemoteModels() {
-        withContext(dispatcher) {
+    override suspend fun fetchRemoteModels(): Flow<List<Model>> {
+        return withContext(dispatcher) {
             // val response = serviceAPI.fetchData("cute")
             val response: Response<List<Model>> = Response.success(
                 listOf(
@@ -57,6 +58,9 @@ class ModelRepositoryImpl(
                         )
                     )
                 }
+                flowOf(response.body()!!)
+            } else {
+                flowOf(emptyList())
             }
         }
     }

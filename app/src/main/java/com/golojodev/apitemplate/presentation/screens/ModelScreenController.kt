@@ -3,14 +3,9 @@ package com.golojodev.apitemplate.presentation.screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,8 +23,7 @@ fun ModelScreenController(
     contentType: ContentType,
     uiState: UIState,
     onFavoriteClicked: (Model) -> Unit,
-    onModelClicked: (Model) -> Unit,
-    onSettingsClicked: () -> Unit
+    onModelClicked: (Model) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -46,20 +40,12 @@ fun ModelScreenController(
             visible = uiState.models.isNotEmpty()
         ) {
             if (contentType == ContentType.List) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    IconButton(onClick = { onSettingsClicked() }) {
-                        Icon(imageVector = Icons.Default.Settings, contentDescription = "")
-                    }
-                    ModelList(
-                        modifier = Modifier.fillMaxWidth(),
-                        models = uiState.models,
-                        onFavoriteClicked = onFavoriteClicked,
-                        onClicked = onModelClicked
-                    )
-                }
+                ModelList(
+                    modifier = Modifier.fillMaxWidth(),
+                    models = uiState.models,
+                    onFavoriteClicked = onFavoriteClicked,
+                    onClicked = onModelClicked
+                )
             } else {
                 ModelListAndDetails(
                     models = uiState.models,

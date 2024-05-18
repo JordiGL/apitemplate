@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 /**
  * Gestiona les dades a mostrar a la vista (ui)
  */
-class ModelViewModel(
+class MainViewModel(
     private val modelRepository: ModelRepository
 ) : ViewModel() {
     val uiState = MutableStateFlow(UIState())
@@ -31,6 +31,27 @@ class ModelViewModel(
         uiState.value = UIState(isLoading = true)
         viewModelScope.launch {
             modelRepository.getModels().asResult().collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        uiState.update {
+                            it.copy(isLoading = false, models = result.data)
+                        }
+                    }
+
+                    is NetworkResult.Error -> {
+                        uiState.update {
+                            it.copy(isLoading = false, error = result.error)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun fetchRemoteModels() {
+        uiState.value = UIState(isLoading = true)
+        viewModelScope.launch {
+            modelRepository.fetchRemoteModels().asResult().collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         uiState.update {

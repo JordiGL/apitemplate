@@ -2,7 +2,7 @@ package com.golojodev.apitemplate
 
 import com.golojodev.apitemplate.domain.models.Model
 import com.golojodev.apitemplate.domain.repositories.ModelRepository
-import com.golojodev.apitemplate.presentation.viewmodels.ModelViewModel
+import com.golojodev.apitemplate.presentation.viewmodels.MainViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -19,13 +19,13 @@ import org.junit.Test
 
 class ModelsViewModelTest {
     private val modelRepository = mockk<ModelRepository>(relaxed = true)
-    private lateinit var modelViewModel: ModelViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
         Dispatchers.setMain(Dispatchers.Unconfined)
-        modelViewModel = ModelViewModel(modelRepository)
+        mainViewModel = MainViewModel(modelRepository)
     }
 
     @Test
@@ -40,9 +40,9 @@ class ModelsViewModelTest {
         )
 
         coEvery { modelRepository.getModels() } returns flowOf(models)
-        modelViewModel.getModels()
+        mainViewModel.getModels()
         coVerify { modelRepository.getModels() }
-        val uiState = modelViewModel.uiState.value
+        val uiState = mainViewModel.uiState.value
         assertEquals(models, uiState.models)
     }
 
