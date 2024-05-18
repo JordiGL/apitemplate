@@ -3,9 +3,9 @@ package com.golojodev.apitemplate.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.golojodev.apitemplate.domain.models.Model
-import com.golojodev.apitemplate.domain.repositories.ModelRepository
 import com.golojodev.apitemplate.domain.states.NetworkResult
 import com.golojodev.apitemplate.domain.states.asResult
+import com.golojodev.apitemplate.domain.usecases.UseCaseProvider
 import com.golojodev.apitemplate.presentation.states.UIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
  * Gestiona les dades a mostrar a la vista (ui)
  */
 class MainViewModel(
-    private val modelRepository: ModelRepository
+    private val useCaseProvider: UseCaseProvider
 ) : ViewModel() {
     val uiState = MutableStateFlow(UIState())
 
@@ -30,7 +30,7 @@ class MainViewModel(
     fun getModels() {
         uiState.value = UIState(isLoading = true)
         viewModelScope.launch {
-            modelRepository.getModels().asResult().collect { result ->
+            useCaseProvider.onGetModels().asResult().collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         uiState.update {
@@ -51,7 +51,7 @@ class MainViewModel(
     fun fetchRemoteModels() {
         uiState.value = UIState(isLoading = true)
         viewModelScope.launch {
-            modelRepository.fetchRemoteModels().asResult().collect { result ->
+            useCaseProvider.onFetchModels().asResult().collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         uiState.update {
@@ -71,13 +71,13 @@ class MainViewModel(
 
     fun update(model: Model) {
         viewModelScope.launch {
-            modelRepository.updateModel(model)
+           useCaseProvider.onUpdateModel(model)
         }
     }
     fun getFavorites() {
         viewModelScope.launch {
-            modelRepository.getFavorites().collect {
-                _favorites.value = it
+            useCaseProvider.onGetFavorites().collect { result ->
+                _favorites.value = result
             }
         }
     }

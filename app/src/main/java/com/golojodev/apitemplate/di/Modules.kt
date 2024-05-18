@@ -10,6 +10,14 @@ import com.golojodev.apitemplate.domain.repositories.ModelRepository
 import com.golojodev.apitemplate.domain.repositories.ModelRepositoryImpl
 import com.golojodev.apitemplate.domain.repositories.ThemeRepository
 import com.golojodev.apitemplate.domain.repositories.ThemeRepositoryImpl
+import com.golojodev.apitemplate.domain.usecases.FetchModelsUseCase
+import com.golojodev.apitemplate.domain.usecases.GetFavoritesUseCase
+import com.golojodev.apitemplate.domain.usecases.GetModelsUseCase
+import com.golojodev.apitemplate.domain.usecases.GetThemeUseCase
+import com.golojodev.apitemplate.domain.usecases.SaveThemeUseCase
+import com.golojodev.apitemplate.domain.usecases.UpdateModelUseCase
+import com.golojodev.apitemplate.domain.usecases.UseCaseProvider
+import com.golojodev.apitemplate.domain.usecases.UseCaseProviderImpl
 import com.golojodev.apitemplate.presentation.viewmodels.MainViewModel
 import com.golojodev.apitemplate.presentation.viewmodels.ThemeViewModel
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -55,5 +63,12 @@ val appModules = module {
     }
     single { get<ModelDatabase>().modelDao() }
     single { get<ModelDatabase>().themeStateDao() }
+    single { FetchModelsUseCase(get()) }
+    single { GetModelsUseCase(get()) }
+    single { GetThemeUseCase(get()) }
+    single { SaveThemeUseCase(get()) }
+    single { UpdateModelUseCase(get()) }
+    single { GetFavoritesUseCase(get()) }
+    single<UseCaseProvider>{ UseCaseProviderImpl(get() ,get() , get(), get(), get(), get()) }
     worker { ModelsSyncWorker(get(), get(), get()) }
 }
